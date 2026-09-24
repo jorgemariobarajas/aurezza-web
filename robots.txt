@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /actualizar-catalogo.ps1
+
+Sitemap: https://aurezzaco.com/sitemap.xml
