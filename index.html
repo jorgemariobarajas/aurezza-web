@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUREZZA Joyería</title>
+  <meta name="description" content="AUREZZA Joyería: anillos, topos, candongas, dijes, pulseras y más. Pide tu joya por WhatsApp.">
+  <link rel="icon" href="imagenes/logo.svg.azul.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <header class="barra">
+    <a class="barra__logo" href="#inicio" aria-label="AUREZZA, ir al inicio">
+      <img src="imagenes/logo.svg.crema.svg" alt="AUREZZA">
+    </a>
+    <nav class="barra__menu" aria-label="Menú principal">
+      <a href="#colecciones">Colecciones</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+      <button class="barra__bolsa" type="button" aria-label="Abrir tu bolsa">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l1 14H5L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="contador" hidden>0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="portada">
+      <img class="portada__logo" src="imagenes/logo.svg.crema.svg" alt="AUREZZA Joyería">
+      <p class="portada__lema">Essenzza <span>·</span> Belleza <span>·</span> Aurezza</p>
+      <p class="portada__texto">Joyas pensadas para acompañarte todos los días, con el brillo discreto de lo atemporal.</p>
+      <a class="boton boton--claro" href="#colecciones">Ver colecciones</a>
+    </section>
+
+    <section id="colecciones" class="colecciones">
+      <p class="antetitulo">Catálogo</p>
+      <h2>Colecciones</h2>
+
+      <div class="carrusel" aria-label="Categorías">
+        <div class="carrusel__pista"></div>
+      </div>
+
+      <div class="ancla-catalogo"></div>
+      <div class="cinta">
+        <button class="cinta__flecha" type="button" data-dir="-1" aria-label="Categorías anteriores">‹</button>
+        <div class="filtros" role="toolbar" aria-label="Filtrar por categoría"></div>
+        <button class="cinta__flecha" type="button" data-dir="1" aria-label="Más categorías">›</button>
+      </div>
+
+      <label class="buscador">
+        <span class="oculto">Buscar joya</span>
+        <input type="search" placeholder="Buscar por nombre…" autocomplete="off">
+      </label>
+      <p class="resumen" aria-live="polite"></p>
+      <div class="rejilla"></div>
+    </section>
+
+    <section id="nosotros" class="nosotros">
+      <div class="nosotros__contenido">
+        <p class="antetitulo">Nuestra marca</p>
+        <h2>El aura de lo atemporal</h2>
+        <p>AUREZZA nace de la unión entre la luminosidad de un <em>aura</em> que no se apaga y la sofisticación de la herencia italiana. La doble Z le da al nombre un acento firme e inconfundible.</p>
+        <p>Creemos en el lujo silencioso: piezas que no necesitan gritar para destacar, elegidas con la misma precisión con la que se talla la faceta de una piedra.</p>
+      </div>
+      <img class="nosotros__sello" src="imagenes/logo.svg.azul.svg" alt="" aria-hidden="true">
+    </section>
+
+    <section id="contacto" class="contacto">
+      <p class="antetitulo">Escríbenos</p>
+      <h2>¿Te enamoraste de alguna?</h2>
+      <p class="contacto__texto">Pide tu joya, consulta tallas o disponibilidad. Te respondemos por el canal que prefieras.</p>
+      <div class="contacto__canales">
+        <a class="canal" href="https://wa.me/573003212658?text=Hola%20AUREZZA%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener">
+          <span class="canal__nombre">WhatsApp</span>
+          <span class="canal__dato">+57 300 321 2658</span>
+        </a>
+        <a class="canal" href="https://www.instagram.com/aurezza_co/" target="_blank" rel="noopener">
+          <span class="canal__nombre">Instagram</span>
+          <span class="canal__dato">@aurezza_co</span>
+        </a>
+        <a class="canal" href="mailto:aurezza.co@gmail.com">
+          <span class="canal__nombre">Correo</span>
+          <span class="canal__dato">aurezza.co@gmail.com</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <img src="imagenes/logo.svg.crema.svg" alt="AUREZZA">
+    <p>Essenzza · Belleza · Aurezza</p>
+    <p class="pie__legal">© <span id="anio"></span> AUREZZA Joyería · Colombia</p>
+  </footer>
+
+  <a class="whatsapp-flotante" href="https://wa.me/573003212658?text=Hola%20AUREZZA" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+  </a>
+
+  <div class="velo" hidden></div>
+  <aside class="bolsa" aria-label="Tu bolsa" aria-hidden="true">
+    <div class="bolsa__cabecera">
+      <h2>Tu bolsa</h2>
+      <button class="bolsa__cerrar" type="button" aria-label="Cerrar bolsa">×</button>
+    </div>
+    <ul class="bolsa__lista"></ul>
+    <div class="bolsa__vacia">
+      <p>Tu bolsa está vacía.</p>
+      <p>Añade las piezas que te gusten y envíanos tu pedido por WhatsApp.</p>
+    </div>
+    <div class="bolsa__pie">
+      <form class="cupon" novalidate>
+        <label class="oculto" for="cupon">Cupón de descuento</label>
+        <input id="cupon" type="text" placeholder="Cupón de descuento" autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <button type="submit">Aplicar</button>
+      </form>
+      <p class="cupon__mensaje" aria-live="polite"></p>
+      <div class="bolsa__cuentas">
+        <p class="bolsa__linea"><span>Subtotal</span><span class="bolsa__subtotal"></span></p>
+        <p class="bolsa__linea bolsa__descuento" hidden>
+          <span>Descuento <em class="bolsa__codigo"></em> <button class="cupon__quitar" type="button">Quitar</button></span>
+          <span class="bolsa__rebaja"></span>
+        </p>
+      </div>
+      <p class="bolsa__total"><span>Total</span><strong></strong></p>
+      <a class="boton boton--oscuro bolsa__enviar" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+      <p class="bolsa__nota">Te confirmaremos disponibilidad, tallas y envío por WhatsApp.</p>
+      <button class="bolsa__vaciar" type="button">Vaciar bolsa</button>
+    </div>
+  </aside>
+  <div class="aviso" role="status" aria-live="polite"></div>
+
+  <script src="catalogo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
