@@ -121,6 +121,21 @@ h2 {
   opacity: 0.8;
 }
 
+/* Franja de entregas bajo la portada */
+.entregas {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 0.4rem 1.2rem;
+  padding: 1.1rem 16px;
+  background: var(--crema);
+  color: var(--texto);
+  text-align: center;
+  font: 400 0.8rem/1.4 var(--subtitulos);
+  letter-spacing: 0.06em;
+}
+.entregas p { margin: 0; }
+.entregas strong { font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.7rem; margin-right: 0.4em; }
+.entregas span { opacity: 0.4; }
+
 /* Colecciones */
 .colecciones {
   max-width: 1240px;
@@ -368,7 +383,22 @@ h2 {
   color: var(--crema);
 }
 .contacto .antetitulo { color: rgba(233, 228, 224, 0.6); }
-.contacto__texto { max-width: 32rem; margin: 0 auto 3rem; opacity: 0.8; }
+.contacto__texto { max-width: 32rem; margin: 0 auto 2rem; opacity: 0.8; }
+.contacto__entregas {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 1rem 3rem;
+  margin: 0 0 3rem; padding: 0;
+  list-style: none;
+  font: 400 1.05rem/1.3 var(--titulos);
+}
+.contacto__entregas span {
+  display: block;
+  margin-bottom: 0.4rem;
+  font: 500 0.66rem/1 var(--subtitulos);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
 .contacto__canales {
   display: flex; flex-wrap: wrap; justify-content: center;
   gap: 1rem;
@@ -578,6 +608,8 @@ h2 {
   .nosotros__sello { grid-row: 1; width: 120px; }
   .canal { min-width: 0; width: 100%; }
   .categoria { width: 132px; }
+  .entregas { flex-direction: column; }
+  .entregas span { display: none; }
   .joya__anadir { letter-spacing: 0.1em; font-size: 0.6rem; }
 }
 @media (max-width: 420px) {
