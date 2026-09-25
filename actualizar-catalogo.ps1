@@ -7,7 +7,9 @@ $productos = @()
 $omitidos = @()
 
 Get-ChildItem $carpeta -File | Where-Object { $_.Extension -match '^\.(jpe?g|png|webp)$' } | Sort-Object Name | ForEach-Object {
-    $partes = $_.BaseName -split '\s+-\s+'
+    # Ignora el " (2)", " (3)"... que Windows añade al copiar un archivo con el mismo nombre
+    $nombre = $_.BaseName -replace '\s*\(\d+\)$', ''
+    $partes = $nombre -split '\s+-\s+'
     if ($partes.Count -lt 3) { $omitidos += $_.Name; return }
     $productos += [ordered]@{
         categoria = $partes[0].Trim()
