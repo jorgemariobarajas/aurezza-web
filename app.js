@@ -32,6 +32,7 @@ function aTitulo(texto) {
 const categoriaDe = joya => nombreCategoria.get(joya.categoria) || aTitulo(joya.categoria);
 const valor = precio => parseInt(precio.replace(/\D/g, ''), 10) || 0;          // "$135.000" -> 135000
 const pesos = n => '$' + n.toLocaleString('es-CO');                             // 135000 -> "$135.000"
+const agotada = joya => /agotad/i.test(joya.precio);                            // foto con "(AGOTADO)" en lugar de precio
 const rutaFoto = ruta => ruta.split('/').map(encodeURIComponent).join('/');
 const enlaceWhatsApp = texto => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 
@@ -156,15 +157,21 @@ function tarjeta(joya) {
   art.querySelector('.joya__categoria').textContent = categoriaDe(joya);
   art.querySelector('.joya__nombre').textContent = nombre;
   if (joya.detalle) art.querySelector('.joya__detalle').textContent = aTitulo(joya.detalle);
-  art.querySelector('.joya__precio').textContent = joya.precio;
+  art.querySelector('.joya__precio').textContent = agotada(joya) ? 'Agotado' : joya.precio;
   const boton = art.querySelector('.joya__anadir');
   boton.dataset.foto = joya.foto;
+  if (agotada(joya)) {
+    boton.disabled = true;
+    boton.textContent = 'Agotado';
+    return art;
+  }
   boton.addEventListener('click', () => bolsa.has(joya.foto) ? abrirBolsa() : anadir(joya));
   pintarBotonAnadir(boton);
   return art;
 }
 
 function pintarBotonAnadir(boton) {
+  if (boton.disabled) return;
   const dentro = bolsa.has(boton.dataset.foto);
   boton.classList.toggle('joya__anadir--dentro', dentro);
   boton.textContent = dentro ? 'En tu bolsa ✓' : 'Añadir a la bolsa';
@@ -210,7 +217,7 @@ const aviso = document.querySelector('.aviso');
 function cargarBolsa() {
   try {
     for (const { foto, cantidad } of JSON.parse(localStorage.getItem(CLAVE_BOLSA) || '[]')) {
-      if (porFoto.has(foto) && cantidad > 0) bolsa.set(foto, cantidad);
+      if (porFoto.has(foto) && !agotada(porFoto.get(foto)) && cantidad > 0) bolsa.set(foto, cantidad);
     }
     const guardado = localStorage.getItem(CLAVE_CUPON);
     if (guardado in CUPONES) cupon = guardado;
