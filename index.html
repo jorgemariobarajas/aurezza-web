@@ -180,9 +180,33 @@
       <button class="bolsa__vaciar" type="button">Vaciar bolsa</button>
     </div>
   </aside>
+  <div class="ficha" role="dialog" aria-modal="true" aria-labelledby="ficha-nombre" hidden>
+    <div class="ficha__velo"></div>
+    <article class="ficha__hoja">
+      <button class="ficha__cerrar" type="button" aria-label="Cerrar">×</button>
+      <div class="ficha__galeria">
+        <div class="ficha__foto"><img alt=""></div>
+        <div class="ficha__miniaturas"></div>
+      </div>
+      <div class="ficha__info">
+        <p class="joya__categoria ficha__categoria"></p>
+        <h2 id="ficha-nombre"></h2>
+        <p class="joya__detalle ficha__detalle"></p>
+        <p class="joya__precio ficha__precio"></p>
+        <p class="ficha__descripcion"></p>
+        <button class="joya__anadir ficha__anadir" type="button"></button>
+        <ul class="bolsa__nota ficha__nota">
+          <li>Entrega en persona sin costo en Duitama y Bogotá</li>
+          <li>Envíos a toda Colombia</li>
+          <li>Pago por Nequi o transferencia</li>
+        </ul>
+      </div>
+    </article>
+  </div>
   <div class="aviso" role="status" aria-live="polite"></div>
 
   <script src="catalogo.js"></script>
+  <script src="descripciones.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

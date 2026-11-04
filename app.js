@@ -145,17 +145,18 @@ function tarjeta(joya) {
   art.className = 'joya';
   const nombre = aTitulo(joya.nombre);
   art.innerHTML = `
-    <div class="joya__marco"><img loading="lazy" alt=""></div>
+    <button class="joya__marco" type="button"><img loading="lazy" alt=""></button>
     <p class="joya__categoria"></p>
-    <h3 class="joya__nombre"></h3>
+    <h3 class="joya__nombre"><button class="joya__titulo" type="button"></button></h3>
     ${joya.detalle ? '<p class="joya__detalle"></p>' : ''}
     <p class="joya__precio"></p>
     <button class="joya__anadir" type="button"></button>`;
   const img = art.querySelector('img');
   img.src = rutaFoto(joya.foto);
-  img.alt = `${nombre}, ${categoriaDe(joya)}`;
+  img.alt = `Ver ${nombre}, ${categoriaDe(joya)}`;
   art.querySelector('.joya__categoria').textContent = categoriaDe(joya);
-  art.querySelector('.joya__nombre').textContent = nombre;
+  art.querySelector('.joya__titulo').textContent = nombre;
+  art.querySelectorAll('.joya__marco, .joya__titulo').forEach(b => b.addEventListener('click', () => abrirFicha(joya)));
   if (joya.detalle) art.querySelector('.joya__detalle').textContent = aTitulo(joya.detalle);
   art.querySelector('.joya__precio').textContent = agotada(joya) ? 'Agotado' : joya.precio;
   const boton = art.querySelector('.joya__anadir');
@@ -199,6 +200,104 @@ function pintarJoyas() {
   lista.forEach(j => rejilla.appendChild(tarjeta(j)));
   resumen.textContent = `${lista.length} ${lista.length === 1 ? 'pieza' : 'piezas'}`;
 }
+
+/* ---------- Ficha de cada joya ---------- */
+
+const DESCRIPCION_GENERAL = 'Una pieza de AUREZZA, elegida para acompañarte todos los días con el brillo discreto de lo atemporal.';
+const ficha = document.querySelector('.ficha');
+const fichaFoto = ficha.querySelector('.ficha__foto img');
+const fichaMiniaturas = ficha.querySelector('.ficha__miniaturas');
+const fichaBoton = ficha.querySelector('.ficha__anadir');
+const limpio = texto => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const enlaceDe = joya => limpio(`${joya.categoria} ${joya.nombre}`);
+let joyaEnFicha = null;
+let fichaEnHistorial = false;   // true si abrir la ficha añadió un paso al botón "atrás"
+let elementoPrevio = null;
+
+function mostrarFoto(joya, ruta, boton) {
+  fichaFoto.src = rutaFoto(ruta);
+  fichaFoto.alt = `${aTitulo(joya.nombre)}, ${categoriaDe(joya)}`;
+  fichaMiniaturas.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === boton));
+}
+
+function pintarFicha(joya) {
+  joyaEnFicha = joya;
+  const fotos = [joya.foto, ...[].concat(joya.extras || [])];
+  fichaMiniaturas.innerHTML = '';
+  fichaMiniaturas.hidden = fotos.length < 2;
+  fotos.forEach((ruta, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', i ? `Ver foto ${i + 1}` : 'Ver foto principal');
+    const mini = document.createElement('img');
+    mini.src = rutaFoto(ruta);
+    mini.alt = '';
+    b.appendChild(mini);
+    b.addEventListener('click', () => mostrarFoto(joya, ruta, b));
+    fichaMiniaturas.appendChild(b);
+  });
+  mostrarFoto(joya, joya.foto, fichaMiniaturas.firstChild);
+  ficha.querySelector('.ficha__categoria').textContent = categoriaDe(joya);
+  ficha.querySelector('#ficha-nombre').textContent = aTitulo(joya.nombre);
+  const detalle = ficha.querySelector('.ficha__detalle');
+  detalle.textContent = joya.detalle ? aTitulo(joya.detalle) : '';
+  detalle.hidden = !joya.detalle;
+  ficha.querySelector('.ficha__precio').textContent = agotada(joya) ? 'Agotado' : joya.precio;
+  ficha.querySelector('.ficha__descripcion').textContent = window.DESCRIPCIONES?.[`${joya.categoria}|${joya.nombre}`] || DESCRIPCION_GENERAL;
+  fichaBoton.dataset.foto = joya.foto;
+  fichaBoton.disabled = agotada(joya);
+  if (agotada(joya)) fichaBoton.textContent = 'Agotado'; else pintarBotonAnadir(fichaBoton);
+  ficha.querySelector('.ficha__hoja').scrollTop = 0;
+}
+
+function mostrarFicha() {
+  ficha.hidden = false;
+  document.body.style.overflow = 'hidden';
+  ficha.querySelector('.ficha__cerrar').focus();
+}
+
+function ocultarFicha() {
+  ficha.hidden = true;
+  joyaEnFicha = null;
+  fichaEnHistorial = false;
+  document.body.style.overflow = '';
+  if (elementoPrevio?.isConnected) elementoPrevio.focus({ preventScroll: true });
+  elementoPrevio = null;
+}
+
+function abrirFicha(joya) {
+  elementoPrevio = document.activeElement;
+  history.pushState(null, '', `#joya=${enlaceDe(joya)}`);
+  fichaEnHistorial = true;
+  pintarFicha(joya);
+  mostrarFicha();
+}
+
+function cerrarFicha() {
+  if (fichaEnHistorial) { history.back(); return; }   // el evento popstate termina de cerrarla
+  history.replaceState(null, '', location.pathname + location.search);
+  ocultarFicha();
+}
+
+// Abre la ficha si la dirección trae #joya=... (enlace compartido o botón "adelante").
+function revisarEnlace() {
+  const enlace = location.hash.startsWith('#joya=') ? location.hash.slice(6) : null;
+  const joya = enlace && catalogo.find(j => enlaceDe(j) === enlace);
+  if (joya) {
+    pintarFicha(joya);
+    mostrarFicha();
+  } else if (!ficha.hidden) {
+    ocultarFicha();
+  }
+}
+
+fichaBoton.addEventListener('click', () => {
+  if (!joyaEnFicha || fichaBoton.disabled) return;
+  if (bolsa.has(joyaEnFicha.foto)) abrirBolsa(); else anadir(joyaEnFicha);
+});
+ficha.querySelector('.ficha__cerrar').addEventListener('click', cerrarFicha);
+ficha.querySelector('.ficha__velo').addEventListener('click', cerrarFicha);
+window.addEventListener('popstate', revisarEnlace);
 
 /* ---------- Bolsa ---------- */
 
@@ -420,7 +519,7 @@ function cerrarBolsa() {
   panel.classList.remove('bolsa--abierta');
   panel.setAttribute('aria-hidden', 'true');
   velo.hidden = true;
-  document.body.style.overflow = '';
+  document.body.style.overflow = ficha.hidden ? '' : 'hidden';
 }
 
 let temporizadorAviso;
@@ -434,7 +533,11 @@ function mostrarAviso(texto) {
 document.querySelector('.barra__bolsa').addEventListener('click', abrirBolsa);
 document.querySelector('.bolsa__cerrar').addEventListener('click', cerrarBolsa);
 velo.addEventListener('click', cerrarBolsa);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarBolsa(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (panel.classList.contains('bolsa--abierta')) cerrarBolsa();
+  else if (!ficha.hidden) cerrarFicha();
+});
 document.querySelector('.bolsa__vaciar').addEventListener('click', () => { bolsa.clear(); cambioBolsa(); });
 document.querySelector('.cupon').addEventListener('submit', aplicarCupon);
 document.querySelector('.cupon__quitar').addEventListener('click', quitarCupon);
@@ -450,5 +553,6 @@ pintarCarrusel();
 pintarFiltros();
 pintarJoyas();
 pintarBolsa();
+revisarEnlace();
 actualizarFlechas();
 document.fonts.ready.then(actualizarFlechas);   // los anchos cambian al cargar las tipografías

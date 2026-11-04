@@ -184,9 +184,10 @@ h2 {
 .categoria__foto::after {
   content: "";
   position: absolute; inset: 8px;
-  border: 1px solid rgba(251, 250, 248, 0.7);
+  border: 1px solid var(--azul);
   transition: inset 0.3s;
 }
+.categoria__foto:has(.categoria__sello)::after { border-color: rgba(233, 228, 224, 0.4); }
 .categoria:hover .categoria__foto img { transform: scale(1.07); }
 .categoria[aria-pressed="true"] .categoria__foto { outline: 2px solid var(--azul); outline-offset: 3px; }
 .categoria__nombre {
@@ -277,10 +278,15 @@ h2 {
    para que todas las fotos se vean como una sola sesión. */
 .joya { display: flex; flex-direction: column; }
 .joya__marco {
+  display: block;
   position: relative;
+  width: 100%;
+  padding: 0;
   aspect-ratio: 1 / 1;
   background: var(--crema);
+  border: 0;
   overflow: hidden;
+  cursor: pointer;
 }
 .joya__marco img {
   width: 100%; height: 100%;
@@ -302,9 +308,19 @@ h2 {
 .joya__marco::after {
   content: "";
   position: absolute; inset: 10px; z-index: 2;
-  border: 1px solid rgba(251, 250, 248, 0.7);
+  border: 1px solid var(--azul);
   pointer-events: none;
 }
+.joya__titulo {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.joya__titulo:hover { text-decoration: underline; text-underline-offset: 3px; }
 .joya:hover .joya__marco img { transform: scale(1.14); }
 .joya__categoria {
   font: 500 0.65rem/1 var(--subtitulos);
@@ -419,6 +435,57 @@ h2 {
 }
 .whatsapp-flotante:hover { transform: scale(1.07); }
 .whatsapp-flotante svg { width: 26px; height: 26px; fill: var(--crema); }
+
+/* Ficha de cada joya: queda debajo de la bolsa para poder abrirla encima */
+.ficha {
+  position: fixed; inset: 0; z-index: 25;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.ficha[hidden] { display: none; }
+.ficha__velo { position: absolute; inset: 0; background: rgba(35, 40, 56, 0.55); }
+.ficha__hoja {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  width: min(980px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--blanco);
+  box-shadow: 0 24px 60px rgba(35, 40, 56, 0.3);
+}
+.ficha__cerrar {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 40px; height: 40px;
+  font: 300 1.8rem/1 var(--cuerpo);
+  color: var(--texto);
+  background: rgba(251, 250, 248, 0.85);
+  border: 0;
+  cursor: pointer;
+}
+.ficha__galeria { padding: 1.5rem; background: var(--crema-claro); }
+.ficha__foto { aspect-ratio: 1 / 1; background: var(--crema); }
+.ficha__foto img { width: 100%; height: 100%; object-fit: contain; filter: sepia(0.08) saturate(0.95) contrast(1.02); }
+.ficha__miniaturas { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+.ficha__miniaturas[hidden] { display: none; }
+.ficha__miniaturas button {
+  width: 72px; height: 72px;
+  padding: 0;
+  background: var(--crema);
+  border: 1px solid var(--linea);
+  cursor: pointer;
+}
+.ficha__miniaturas button[aria-pressed="true"] { border-color: var(--azul); outline: 1px solid var(--azul); }
+.ficha__miniaturas img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.08) saturate(0.95) contrast(1.02); }
+.ficha__info { display: flex; flex-direction: column; padding: 3rem 2rem 2rem; }
+.ficha__categoria { margin-top: 0; }
+.ficha__info h2 { font-size: clamp(1.7rem, 3vw, 2.2rem); margin: 0 0 0.5rem; }
+.ficha__detalle { margin: 0 0 0.5rem; }
+.ficha__detalle[hidden] { display: none; }
+.ficha__precio { font-size: 1.1rem; margin: 0.3rem 0 1.2rem; }
+.ficha__descripcion { margin: 0 0 1.6rem; color: var(--texto); }
+.ficha__anadir { margin-top: 0; padding: 1rem 0.5rem; }
+.ficha__nota { margin: 1rem 0 0; }
 
 /* Bolsa (panel lateral) */
 .boton--oscuro { color: var(--crema); background: var(--azul); border-color: var(--azul); text-align: center; }
@@ -611,6 +678,11 @@ h2 {
   .nosotros__sello { grid-row: 1; width: 120px; }
   .canal { min-width: 0; width: 100%; }
   .categoria { width: 132px; }
+  .ficha { padding: 0; }
+  .ficha__hoja { display: block; height: 100%; }
+  .ficha__galeria { padding: 0 0 1rem; }
+  .ficha__miniaturas { padding: 0 1rem; }
+  .ficha__info { padding: 0.5rem 1rem 2rem; }
   .joya__anadir { letter-spacing: 0.1em; font-size: 0.6rem; }
 }
 @media (max-width: 420px) {

@@ -5,18 +5,23 @@
 $carpeta = Join-Path $PSScriptRoot 'imagenes\joyas'
 $productos = @()
 $omitidos = @()
+$fotosExtra = @(Get-ChildItem (Join-Path $carpeta 'extra') -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -match '^\.(jpe?g|png|webp)$' })
 
 Get-ChildItem $carpeta -File | Where-Object { $_.Extension -match '^\.(jpe?g|png|webp)$' } | Sort-Object Name | ForEach-Object {
     # Ignora el " (2)", " (3)"... que Windows añade al copiar un archivo con el mismo nombre
     $nombre = $_.BaseName -replace '\s*\(\d+\)$', ''
     $partes = $nombre -split '\s+-\s+'
     if ($partes.Count -lt 3) { $omitidos += $_.Name; return }
+    # Fotos adicionales en imagenes\joyas\extra: "CATEGORIA - NOMBRE - lo que sea.jpg"
+    $prefijo = $partes[0].Trim() + ' - ' + $partes[1].Trim() + ' - '
+    $extras = @($fotosExtra | Where-Object { $_.Name.StartsWith($prefijo) } | Sort-Object Name | ForEach-Object { 'imagenes/joyas/extra/' + $_.Name })
     $productos += [ordered]@{
         categoria = $partes[0].Trim()
         nombre    = $partes[1].Trim()
         precio    = $partes[2].Trim()
         detalle   = if ($partes.Count -gt 3) { ($partes[3..($partes.Count - 1)] -join ' - ').Trim() } else { '' }
         foto      = 'imagenes/joyas/' + $_.Name
+        extras    = $extras
     }
 }
 
