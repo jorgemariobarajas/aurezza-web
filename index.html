@@ -146,6 +146,10 @@
       <h2>Tu bolsa</h2>
       <button class="bolsa__cerrar" type="button" aria-label="Cerrar bolsa">×</button>
     </div>
+    <div class="envio">
+      <p class="envio__texto" aria-live="polite"></p>
+      <div class="envio__barra" role="progressbar" aria-label="Progreso hacia el envío gratis" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+    </div>
     <ul class="bolsa__lista"></ul>
     <div class="bolsa__vacia">
       <p>Tu bolsa está vacía.</p>
@@ -164,10 +168,15 @@
           <span>Descuento <em class="bolsa__codigo"></em> <button class="cupon__quitar" type="button">Quitar</button></span>
           <span class="bolsa__rebaja"></span>
         </p>
+        <p class="bolsa__linea"><span>Envío</span><span class="bolsa__envio"></span></p>
       </div>
       <p class="bolsa__total"><span>Total</span><strong></strong></p>
       <a class="boton boton--oscuro bolsa__enviar" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
-      <p class="bolsa__nota">Te confirmaremos disponibilidad, tallas y envío por WhatsApp.</p>
+      <ul class="bolsa__nota">
+        <li>Entrega en persona sin costo en Duitama y Bogotá</li>
+        <li>Pago por Nequi o transferencia</li>
+        <li>Te confirmamos disponibilidad y envío por WhatsApp</li>
+      </ul>
       <button class="bolsa__vaciar" type="button">Vaciar bolsa</button>
     </div>
   </aside>

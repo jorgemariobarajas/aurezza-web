@@ -454,8 +454,34 @@ h2 {
 .bolsa__lista { flex: 1; overflow-y: auto; margin: 0; padding: 0.5rem 1.5rem; list-style: none; }
 .bolsa__vacia { flex: 1; padding: 2rem 1.5rem; text-align: center; color: var(--texto-suave); display: none; }
 .bolsa--vacia .bolsa__vacia { display: block; }
+.bolsa--vacia .envio,
 .bolsa--vacia .bolsa__lista,
 .bolsa--vacia .bolsa__pie { display: none; }
+
+/* Barra de progreso hacia el envío gratis */
+.envio { padding: 0.9rem 1.5rem 1rem; border-bottom: 1px solid var(--linea); }
+.envio__texto { margin: 0 0 0.55rem; font-size: 0.85rem; color: var(--texto); }
+.envio__barra { height: 4px; background: var(--crema); overflow: hidden; }
+.envio__barra span { display: block; height: 100%; background: var(--azul); transition: width 0.35s ease; }
+
+/* Pieza sugerida para completar el pedido */
+.sugerencia { padding: 1.1rem 0 0.5rem; }
+.sugerencia__titulo { margin: 0 0 0.8rem; font-size: 0.85rem; color: var(--texto); }
+.sugerencia__pieza { display: grid; grid-template-columns: 72px 1fr auto; gap: 0.9rem; align-items: center; }
+.sugerencia__pieza img { width: 72px; height: 72px; object-fit: cover; filter: sepia(0.08) saturate(0.95) contrast(1.02); }
+.sugerencia__pieza p { margin: 0; }
+.sugerencia__anadir {
+  padding: 0.6rem 0.8rem;
+  font: 500 0.62rem/1 var(--subtitulos);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--azul);
+  background: transparent;
+  border: 1px solid var(--azul);
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.sugerencia__anadir:hover { background: var(--azul); color: var(--crema); }
 
 .item {
   display: grid;
@@ -473,6 +499,8 @@ h2 {
 .item__nombre { font: 400 1rem/1.3 var(--titulos); }
 .item__detalle { font-size: 0.75rem; color: var(--texto-suave); margin: 0.2rem 0 0.5rem !important; }
 .item__cantidad { display: inline-flex; align-items: center; border: 1px solid var(--linea); }
+.item__cantidad[hidden] { display: none; }
+.item__cantidad button:disabled { opacity: 0.3; cursor: default; }
 .item__cantidad button {
   width: 30px; height: 28px;
   font-size: 1rem;
@@ -547,7 +575,7 @@ h2 {
   text-decoration: underline;
   background: none; border: 0; padding: 0; cursor: pointer;
 }
-.bolsa__nota { font-size: 0.75rem; color: var(--texto-suave); text-align: center; margin: 0.8rem 0 0.4rem; }
+.bolsa__nota { font-size: 0.75rem; line-height: 1.5; color: var(--texto-suave); text-align: center; margin: 0.8rem 0 0.4rem; padding: 0; list-style: none; }
 .bolsa__vaciar {
   display: block; margin: 0 auto;
   font: 400 0.72rem var(--cuerpo);

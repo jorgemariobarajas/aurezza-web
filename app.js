@@ -206,6 +206,24 @@ const CLAVE_BOLSA = 'aurezza-bolsa';
 const CLAVE_CUPON = 'aurezza-cupon';
 // Cupones válidos: código -> porcentaje de descuento.
 const CUPONES = { AUREZZASOYYO: 10 };
+const ENVIO_GRATIS_DESDE = 150000;
+// Casi todas las piezas tienen 1 unidad; aquí van solo las que tienen más.
+const UNIDADES = { 'ÁRBOL DE LA VIDA VERDE': 2 };
+const unidadesDe = joya => UNIDADES[joya.nombre] || 1;
+// Categorías que combinan con lo que el cliente ya lleva, en orden de preferencia.
+const COMBINA = {
+  'PANDORA': ['PANDORA', 'ANILLOS', 'PULSERAS'],
+  'TOPOS + DIJE': ['ANILLOS', 'PULSERAS', 'TOPOS DE SEGURIDAD'],
+  'ANILLOS': ['TOPOS', 'PULSERAS', 'TOPOS DE SEGURIDAD'],
+  'TOPOS': ['DIJES', 'ANILLOS', 'TOPOS DE SEGURIDAD'],
+  'DIJES': ['TOPOS', 'CANDONGAS', 'TOPOS DE SEGURIDAD'],
+  'CANDONGAS': ['DIJES', 'ANILLOS', 'PULSERAS'],
+  'JUEGOS COMPLETOS': ['ANILLOS', 'PULSERAS', 'TOPOS DE SEGURIDAD'],
+  'PULSERAS': ['ANILLOS', 'TOPOS', 'CANDONGAS'],
+  'TOPOS DE SEGURIDAD': ['TOPOS', 'DIJES', 'ANILLOS'],
+  'GARGANTILLAS': ['TOPOS', 'ANILLOS', 'PULSERAS'],
+  'OTROS': ['DIJES', 'ANILLOS', 'TOPOS'],
+};
 const bolsa = new Map();   // foto -> cantidad
 let cupon = null;          // código aplicado, o null
 const panel = document.querySelector('.bolsa');
@@ -217,7 +235,8 @@ const aviso = document.querySelector('.aviso');
 function cargarBolsa() {
   try {
     for (const { foto, cantidad } of JSON.parse(localStorage.getItem(CLAVE_BOLSA) || '[]')) {
-      if (porFoto.has(foto) && !agotada(porFoto.get(foto)) && cantidad > 0) bolsa.set(foto, cantidad);
+      const joya = porFoto.get(foto);
+      if (joya && !agotada(joya) && cantidad > 0) bolsa.set(foto, Math.min(cantidad, unidadesDe(joya)));
     }
     const guardado = localStorage.getItem(CLAVE_CUPON);
     if (guardado in CUPONES) cupon = guardado;
@@ -259,13 +278,49 @@ function quitarCupon() {
 function anadir(joya) {
   bolsa.set(joya.foto, (bolsa.get(joya.foto) || 0) + 1);
   cambioBolsa();
-  mostrarAviso(`${aTitulo(joya.nombre)} se añadió a tu bolsa`);
+  if (!panel.classList.contains('bolsa--abierta')) mostrarAviso(`${aTitulo(joya.nombre)} se añadió a tu bolsa`);
 }
 
 function cambiarCantidad(foto, delta) {
-  const nueva = (bolsa.get(foto) || 0) + delta;
+  const nueva = Math.min((bolsa.get(foto) || 0) + delta, unidadesDe(porFoto.get(foto)));
   if (nueva > 0) bolsa.set(foto, nueva); else bolsa.delete(foto);
   cambioBolsa();
+}
+
+// La pieza más económica que completa el envío gratis, entre las categorías que combinan.
+// Si ninguna alcanza, la que más acerca.
+function piezaSugerida(falta, factor) {
+  const ultima = porFoto.get([...bolsa.keys()].pop());
+  const categorias = COMBINA[ultima.categoria] || [];
+  const posibles = catalogo.filter(j => categorias.includes(j.categoria) && !agotada(j) && !bolsa.has(j.foto));
+  if (!posibles.length) return null;
+  const precioFinal = j => valor(j.precio) * factor;
+  const porPrecio = [...posibles].sort((a, b) => precioFinal(a) - precioFinal(b));
+  const alcanza = porPrecio.find(j => precioFinal(j) >= falta);
+  return { joya: alcanza || porPrecio[porPrecio.length - 1], completa: Boolean(alcanza) };
+}
+
+function pintarSugerencia({ joya, completa }) {
+  const li = document.createElement('li');
+  li.className = 'sugerencia';
+  li.innerHTML = `
+    <p class="sugerencia__titulo"></p>
+    <div class="sugerencia__pieza">
+      <img alt="">
+      <div>
+        <p class="item__nombre"></p>
+        <p class="item__detalle"></p>
+        <p class="item__precio"></p>
+      </div>
+      <button class="sugerencia__anadir" type="button">Añadir</button>
+    </div>`;
+  li.querySelector('.sugerencia__titulo').textContent = completa ? 'Con esta pieza completas tu envío gratis' : 'Combina con tu pedido';
+  li.querySelector('img').src = rutaFoto(joya.foto);
+  li.querySelector('.item__nombre').textContent = aTitulo(joya.nombre);
+  li.querySelector('.item__detalle').textContent = [categoriaDe(joya), joya.detalle && aTitulo(joya.detalle)].filter(Boolean).join(' · ');
+  li.querySelector('.item__precio').textContent = joya.precio;
+  li.querySelector('.sugerencia__anadir').addEventListener('click', () => anadir(joya));
+  listaBolsa.appendChild(li);
 }
 
 function cambioBolsa() {
@@ -310,7 +365,9 @@ function pintarBolsa() {
     li.querySelector('img').src = rutaFoto(foto);
     li.querySelector('.item__nombre').textContent = nombre;
     li.querySelector('.item__detalle').textContent = [categoriaDe(joya), joya.detalle && aTitulo(joya.detalle)].filter(Boolean).join(' · ');
+    li.querySelector('.item__cantidad').hidden = unidadesDe(joya) === 1;
     li.querySelector('.item__cantidad span').textContent = cantidad;
+    li.querySelector('[data-delta="1"]').disabled = cantidad >= unidadesDe(joya);
     li.querySelector('.item__precio').textContent = pesos(subtotal);
     li.querySelectorAll('[data-delta]').forEach(b => b.addEventListener('click', () => cambiarCantidad(foto, Number(b.dataset.delta))));
     li.querySelector('.item__quitar').addEventListener('click', () => cambiarCantidad(foto, -cantidad));
@@ -327,10 +384,26 @@ function pintarBolsa() {
   document.querySelector('.bolsa__rebaja').textContent = '−' + pesos(rebaja);
   document.querySelector('.bolsa__total strong').textContent = pesos(aPagar);
 
+  // Envío gratis: se calcula sobre lo que el cliente paga, ya con el cupón aplicado.
+  const falta = Math.max(0, ENVIO_GRATIS_DESDE - aPagar);
+  const progreso = Math.min(100, Math.round(aPagar / ENVIO_GRATIS_DESDE * 100));
+  document.querySelector('.envio__texto').textContent = falta
+    ? `Te faltan ${pesos(falta)} para el envío gratis`
+    : 'Tu pedido ya tiene envío gratis';
+  document.querySelector('.envio__barra span').style.width = progreso + '%';
+  document.querySelector('.envio__barra').setAttribute('aria-valuenow', progreso);
+  document.querySelector('.bolsa__envio').textContent = falta ? 'Se confirma por WhatsApp' : 'Gratis';
+
+  if (falta && bolsa.size) {
+    const sugerida = piezaSugerida(falta, 1 - porcentaje / 100);
+    if (sugerida) pintarSugerencia(sugerida);
+  }
+
   const cuentas = cupon
     ? `Subtotal: ${pesos(total)}\nCupón ${cupon} (−${porcentaje}%): −${pesos(rebaja)}\nTotal: ${pesos(aPagar)}`
     : `Total: ${pesos(total)}`;
-  const mensaje = `Hola AUREZZA, quiero hacer este pedido:\n\n${lineas.join('\n')}\n\n${cuentas}`;
+  const envio = falta ? 'Envío: por confirmar' : 'Envío: gratis';
+  const mensaje = `Hola AUREZZA, quiero hacer este pedido:\n\n${lineas.join('\n')}\n\n${cuentas}\n${envio}\n\nMi ciudad de entrega es: `;
   document.querySelector('.bolsa__enviar').href = enlaceWhatsApp(mensaje);
 }
 
