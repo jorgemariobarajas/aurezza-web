@@ -678,11 +678,17 @@ h2 {
   .nosotros__sello { grid-row: 1; width: 120px; }
   .canal { min-width: 0; width: 100%; }
   .categoria { width: 132px; }
-  .ficha { padding: 0; }
-  .ficha__hoja { display: block; height: 100%; }
-  .ficha__galeria { padding: 0 0 1rem; }
-  .ficha__miniaturas { padding: 0 1rem; }
-  .ficha__info { padding: 0.5rem 1rem 2rem; }
+  .ficha { padding: 16px; }
+  .ficha__hoja { display: block; max-height: 100%; }
+  .ficha__cerrar { top: 4px; right: 4px; }
+  .ficha__galeria { padding: 1rem 1rem 0.8rem; }
+  .ficha__foto { width: 78%; margin: 0 auto; }
+  .ficha__miniaturas { justify-content: center; }
+  .ficha__miniaturas button { width: 56px; height: 56px; }
+  .ficha__info { padding: 1rem 1.1rem 1.25rem; }
+  .ficha__info h2 { font-size: 1.5rem; }
+  .ficha__precio { margin-bottom: 0.8rem; }
+  .ficha__descripcion { margin-bottom: 1rem; font-size: 0.92rem; line-height: 1.55; }
   .joya__anadir { letter-spacing: 0.1em; font-size: 0.6rem; }
 }
 @media (max-width: 420px) {
