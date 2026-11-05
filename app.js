@@ -66,13 +66,13 @@ function medirBarra() {
 
 /* ---------- Carrusel y cinta de categorías ---------- */
 
-// Carrusel en movimiento: las tarjetas van dos veces seguidas para que el recorrido
-// de derecha a izquierda no tenga cortes. La segunda copia es solo visual.
+// Carrusel en movimiento: las tarjetas van tres veces seguidas para que se pueda recorrer
+// sin cortes hacia ambos lados. Las dos últimas copias son solo visuales.
 function pintarCarrusel() {
   pista.innerHTML = '';
   const recorrido = document.createElement('div');
   recorrido.className = 'carrusel__recorrido';
-  for (const copia of [false, true]) {
+  for (const copia of [false, true, true]) {
     for (const cat of listaCategorias) {
       const b = document.createElement('button');
       b.type = 'button';
@@ -83,6 +83,7 @@ function pintarCarrusel() {
         <span class="categoria__nombre"></span>
         <span class="categoria__total"></span>`;
       if (cat.portada) b.querySelector('img').src = rutaFoto(cat.portada.foto);
+      b.querySelector('img').draggable = false;
       b.querySelector('.categoria__nombre').textContent = cat.nombre;
       b.querySelector('.categoria__total').textContent = cat.total ? `${cat.total} ${cat.total === 1 ? 'pieza' : 'piezas'}` : 'Próximamente';
       if (copia) { b.tabIndex = -1; b.setAttribute('aria-hidden', 'true'); }
@@ -91,6 +92,91 @@ function pintarCarrusel() {
     }
   }
   pista.appendChild(recorrido);
+  animarCarrusel(recorrido);
+}
+
+// Avanza solo de derecha a izquierda; se detiene mientras el cliente lo toca, lo arrastra
+// o pasa el ratón por encima, y continúa poco después desde donde lo dejó.
+function animarCarrusel(recorrido) {
+  const SEGUNDOS_POR_VUELTA = 50, ESPERA_MS = 1500, UMBRAL_ARRASTRE = 5;
+  const sinMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let tramo = 0, posicion = 0, pausaHasta = 0, tocando = false, ratonEncima = false, arrastre = null, anterior = performance.now();
+
+  const medir = () => {
+    const nuevo = recorrido.getBoundingClientRect().width / 3;
+    const avance = tramo ? ((pista.scrollLeft % tramo) / tramo) : 0;
+    tramo = nuevo;
+    posicion = tramo + avance * tramo;
+    pista.scrollLeft = posicion;
+  };
+  // Mantiene el recorrido en la copia del medio, donde siempre hay espacio a ambos lados.
+  const recentrar = () => {
+    if (pista.scrollLeft < tramo * 0.5) pista.scrollLeft += tramo;
+    else if (pista.scrollLeft > tramo * 1.5) pista.scrollLeft -= tramo;
+    posicion = pista.scrollLeft;
+  };
+  const conTeclado = () => pista.contains(document.activeElement) && document.activeElement.matches(':focus-visible');
+
+  function cuadro(ahora) {
+    const dt = Math.min(ahora - anterior, 100);
+    anterior = ahora;
+    if (!sinMovimiento && !tocando && !arrastre && ahora >= pausaHasta) {
+      if (ratonEncima || conTeclado()) {
+        recentrar();
+      } else {
+        if (Math.abs(pista.scrollLeft - posicion) > 3) recentrar();
+        posicion += tramo / SEGUNDOS_POR_VUELTA * dt / 1000;
+        if (posicion > tramo * 1.5) posicion -= tramo;
+        pista.scrollLeft = posicion;
+      }
+    }
+    requestAnimationFrame(cuadro);
+  }
+
+  // Dedo: el navegador mueve la fila; aquí solo se detiene el avance automático.
+  pista.addEventListener('touchstart', () => { tocando = true; }, { passive: true });
+  const soltar = () => { tocando = false; pausaHasta = performance.now() + ESPERA_MS; };
+  pista.addEventListener('touchend', soltar, { passive: true });
+  pista.addEventListener('touchcancel', soltar, { passive: true });
+  // El impulso del dedo sigue moviendo la fila un rato después de soltar.
+  pista.addEventListener('scroll', () => {
+    if (Math.abs(pista.scrollLeft - posicion) > 3 && !arrastre) pausaHasta = Math.max(pausaHasta, performance.now() + ESPERA_MS);
+  }, { passive: true });
+
+  // Ratón: arrastrar con el botón presionado.
+  pista.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') ratonEncima = true; });
+  pista.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') ratonEncima = false; });
+  pista.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    arrastre = { x: e.clientX, inicio: pista.scrollLeft, movido: false };
+  });
+  window.addEventListener('pointermove', e => {
+    if (!arrastre) return;
+    const dx = e.clientX - arrastre.x;
+    if (!arrastre.movido && Math.abs(dx) < UMBRAL_ARRASTRE) return;
+    arrastre.movido = true;
+    pista.classList.add('carrusel__pista--arrastrando');
+    pista.scrollLeft = arrastre.inicio - dx;
+    const antes = pista.scrollLeft;
+    recentrar();
+    arrastre.inicio += pista.scrollLeft - antes;
+  });
+  window.addEventListener('pointerup', () => {
+    if (!arrastre) return;
+    // Un arrastre no debe abrir la categoría sobre la que se soltó el ratón.
+    if (arrastre.movido) {
+      const bloquear = e => { e.preventDefault(); e.stopPropagation(); };
+      pista.addEventListener('click', bloquear, { capture: true, once: true });
+      setTimeout(() => pista.removeEventListener('click', bloquear, { capture: true }), 50);
+    }
+    arrastre = null;
+    pista.classList.remove('carrusel__pista--arrastrando');
+    pausaHasta = performance.now() + ESPERA_MS;
+  });
+
+  medir();
+  window.addEventListener('resize', medir);
+  requestAnimationFrame(cuadro);
 }
 
 function pintarFiltros() {
