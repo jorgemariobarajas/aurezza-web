@@ -56,6 +56,7 @@ window.DESCRIPCIONES = {
   'TOPOS + DIJE|PIECITOS': 'Piecitos de plata 925 con circones, en topos y dije a juego. Un detalle lleno de amor para celebrar a quien llegó a cambiarlo todo.',
   'TOPOS + DIJE|PIEDRAS VERMILION': 'Circones de un rojo profundo, sujetos en plata 925, que cuelgan de ganchos con pequeños destellos. Un juego apasionado y elegante para tus noches inolvidables.',
   'TOPOS + DIJE|TORTUGA': 'Tortugas de plata 925 con caparazón de circones, en topos y dije a juego. Un símbolo de calma y larga vida que recuerda disfrutar el camino.',
+  'TOPOS + DIJE|VAN CLEEF MÁRMOL': 'Tréboles de cuatro hojas de superficie lisa y tono claro, con un aire a mármol que se aprecia al tenerlos en la mano. Rodeados por un fino borde de pequeñas esferas de plata 925, forman un juego de topos y dije sereno y elegante.',
   'TOPOS + DIJE|VIRGEN DE GUADALUPE': 'La Virgen de Guadalupe en relieve, rodeada por un halo de circones, en topos y dije de plata 925. Un juego para llevar tu fe cerca con elegancia.',
 
   // Anillos
