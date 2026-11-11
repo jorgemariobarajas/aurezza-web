@@ -88,6 +88,7 @@ window.DESCRIPCIONES = {
   'DIJES|ESCORPIÓN AZUL': 'Un escorpión de plata 925 con cuerpo de circón azul profundo y cola curvada. Un dije intenso y magnético para quienes tienen carácter de sobra.',
   'DIJES|ESCORPIÓN VERDE': 'Su cuerpo de circón verde brilla sobre plata 925 con una fuerza silenciosa. Un dije enigmático, con la personalidad de quien sabe lo que quiere.',
   'DIJES|FLOR ANTIESTRÉS': 'Una flor llena de circones sobre un tallo fino con hojas brillantes, para llevar un pequeño jardín de luz contigo. Una pieza que atrae todas las miradas y calma el alma.',
+  'DIJES|HUELLA DE PERRITO AZUL': 'Una huellita azul enmarcada por un halo de circones, en plata 925. El dije perfecto para llevar cerca del corazón a quien te espera moviendo la cola.',
   'DIJES|LETRAS SHINY': 'Tu inicial, o la de quien más amas, cubierta de circones sobre plata 925. Un dije personal, lleno de brillo y de historia.',
   'DIJES|NUDO DE BRUJA': 'El nudo de cuatro puntas, símbolo antiguo de protección, en plata 925 tallada. Un dije con misterio para llevar contigo como un amuleto.',
   'DIJES|PERRITO': 'Un perrito de plata 925 sentado y atento, con detalles de circones. El dije para quienes saben que el amor también tiene cuatro patas.',
