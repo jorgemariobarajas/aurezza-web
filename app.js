@@ -393,7 +393,7 @@ const CLAVE_CUPON = 'aurezza-cupon';
 const CUPONES = { AUREZZASOYYO: 10 };
 const ENVIO_GRATIS_DESDE = 150000;
 // Casi todas las piezas tienen 1 unidad; aquí van solo las que tienen más.
-const UNIDADES = { 'ÁRBOL DE LA VIDA VERDE': 2 };
+const UNIDADES = {};
 const unidadesDe = joya => UNIDADES[joya.nombre] || 1;
 // Categorías que combinan con lo que el cliente ya lleva, en orden de preferencia.
 const COMBINA = {
