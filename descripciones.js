@@ -72,6 +72,7 @@ window.DESCRIPCIONES = {
   'ANILLOS|VAN CLEEF TRIPLE TRÉBOL': 'Tréboles de cuatro hojas que se suceden con destellos de circones sobre plata 925. Una pieza llena de delicadeza, para atraer la fortuna con estilo.',
 
   // Topos
+  'TOPOS|CORAZÓN DELINEADO': 'Un corazón calado, delineado con circones, que cuelga de un pequeño corazón de plata 925. Unos topos románticos y ligeros que se mueven con gracia.',
   'TOPOS|COLGANTES CIRCONES BLANCOS': 'Dos líneas largas de circones blancos que caen con elegancia y alargan tu silueta. Los topos que transforman cualquier look en uno de noche.',
   'TOPOS|CORAZÓN CHERRY': 'Dos cerezas en forma de corazón, de un circón rojo intenso, unidas por un tallo brillante. Coquetos y divertidos, imposibles de ignorar.',
   'TOPOS|ESTRELLA': 'Estrellas caladas de plata 925 con contorno de circones. Unos topos ligeros y luminosos para quienes siguen su propia dirección.',
@@ -124,7 +125,15 @@ window.DESCRIPCIONES = {
   'PULSERAS|ROLAND GARROS': 'Una línea de circones rojos, intensa y elegante, inspirada en el clásico estilo tenis. Una pulsera apasionada que no necesita más compañía.',
   'PULSERAS|VAN CLEEF ROJA': 'Tréboles de cuatro hojas en rojo intenso, sobre una cadena de plata 925 con circones. Una pulsera llamativa para atraer la buena suerte con mucha elegancia.',
 
+  // Tobilleras
+  'TOBILLERAS|INFINITO': 'Una cadena fina de plata 925 con pequeños infinitos que cuelgan y se mueven a cada paso. Una tobillera delicada para lucir con sandalias y llevar contigo una promesa que no termina.',
+
   // Topos de seguridad
+  'TOPOS DE SEGURIDAD|TRIPLE VERDE': 'Tres corazones de circón verde, uno de ellos colgante, con broche de seguridad. Unos topos frescos y coquetos para llevar todos los días.',
+  'TOPOS DE SEGURIDAD|CUADRADO BRILLANTE': 'Un circón cuadrado y transparente que atrapa la luz en cada faceta, con broche de seguridad. El clásico que combina con todo.',
+  'TOPOS DE SEGURIDAD|TRIPLE ROSADO': 'Tres corazones de circón rosado, uno de ellos colgante, con broche de seguridad. Dulces y delicados, para un toque de color suave.',
+  'TOPOS DE SEGURIDAD|HOJAS CELESTES': 'Hojas de circón celeste que se abren como una pequeña flor, con broche de seguridad. Unos topos frescos que iluminan el rostro.',
+  'TOPOS DE SEGURIDAD|ROLEX': 'Una pequeña corona de plata 925 con broche de seguridad. Un detalle con carácter para quienes llevan su propio reino a todas partes.',
   'TOPOS DE SEGURIDAD|CORAZÓN BLANCO': 'Corazones brillantes de circón blanco para llevar con total tranquilidad. Unos topos delicados que acompañan tu rutina, de la mañana a la noche.',
   'TOPOS DE SEGURIDAD|TRIPLE ROJO': 'Tres circones rojos unidos en un diseño pequeño y lleno de vida. El detalle de color que tu rutina estaba pidiendo.',
   'TOPOS DE SEGURIDAD|VERDE ESMERALDA': 'Un circón cuadrado de un verde intenso como la esmeralda, con broche de seguridad. Pequeños en tamaño y grandes en elegancia.',
