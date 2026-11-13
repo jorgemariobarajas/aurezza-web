@@ -9,6 +9,7 @@ const CATEGORIAS = [
   ['TOPOS', 'Topos'],
   ['DIJES', 'Dijes'],
   ['CANDONGAS', 'Candongas'],
+  ['ARETES CLÁSICOS', 'Aretes clásicos'],
   ['JUEGOS COMPLETOS', 'Juegos completos'],
   ['PULSERAS', 'Pulseras'],
   ['TOBILLERAS', 'Tobilleras'],
@@ -25,6 +26,7 @@ const MINUSCULAS = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'en', 'c
 function aTitulo(texto) {
   return texto.toLowerCase().split(' ').map((palabra, i) => {
     if (/^([a-z]\.)+$/.test(palabra)) return palabra.toUpperCase();   // siglas: A.E.
+    if (/^\([a-z]\)$/.test(palabra)) return palabra.toUpperCase();    // letra entre paréntesis: (C)
     if (i > 0 && MINUSCULAS.has(palabra)) return palabra;
     return palabra.charAt(0).toUpperCase() + palabra.slice(1);
   }).join(' ');
@@ -404,6 +406,7 @@ const COMBINA = {
   'TOPOS': ['DIJES', 'ANILLOS', 'TOPOS DE SEGURIDAD'],
   'DIJES': ['TOPOS', 'CANDONGAS', 'TOPOS DE SEGURIDAD'],
   'CANDONGAS': ['DIJES', 'ANILLOS', 'PULSERAS'],
+  'ARETES CLÁSICOS': ['DIJES', 'ANILLOS', 'TOPOS DE SEGURIDAD'],
   'JUEGOS COMPLETOS': ['ANILLOS', 'PULSERAS', 'TOPOS DE SEGURIDAD'],
   'PULSERAS': ['ANILLOS', 'TOPOS', 'CANDONGAS'],
   'TOBILLERAS': ['PULSERAS', 'TOPOS', 'TOPOS DE SEGURIDAD'],

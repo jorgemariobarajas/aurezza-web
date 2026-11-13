@@ -22,6 +22,9 @@ window.DESCRIPCIONES = {
   // Topos + dije
   'TOPOS + DIJE|ANCLA': 'Un juego de topos y dije en forma de ancla, en plata 925 con circones. El símbolo perfecto de lo que te mantiene firme, sin importar la marea.',
   'TOPOS + DIJE|ÁRBOL DE LA VIDA A.E.': 'Ramas caladas de plata 925 rodeadas por un halo de circones, en topos largos y dije a juego. Un símbolo de raíces y crecimiento que ilumina tu rostro con cada movimiento.',
+  'TOPOS + DIJE|ALAS A.E.': 'Alas de plata 925 caladas y cubiertas de circones, en topos que abrazan el lóbulo y un dije a juego. Un juego que habla de libertad y de quienes nos cuidan desde lejos.',
+  'TOPOS + DIJE|COLIBRÍS CELESTES': 'Colibríes de plata 925 con alas de circones y un corazón de circón celeste en el pecho. Un juego fresco y lleno de movimiento, como un cielo despejado.',
+  'TOPOS + DIJE|SHINY (C)': 'Una candonga pequeña con doble fila de circones y un dije rectangular cubierto de brillo, en plata 925. Un juego moderno de líneas limpias que ilumina sin esfuerzo.',
   'TOPOS + DIJE|ARBOL DE LA VIDA SHINE': 'El árbol de la vida en plata 925, con ramas definidas y contorno brillante. Un juego lleno de significado para llevar cerca lo que te sostiene.',
   'TOPOS + DIJE|ÁRBOL DE LA VIDA VERDE': 'Un árbol de plata 925 con hojas de circones verdes, enmarcado por un círculo de luz. Topos y dije a juego que celebran todo lo que florece en ti.',
   'TOPOS + DIJE|ATENAS': 'Formas cuadradas cubiertas de circones, con la solidez de un clásico griego. Un juego de líneas limpias y brillo generoso para las noches que merecen recordarse.',
@@ -111,6 +114,10 @@ window.DESCRIPCIONES = {
   'CANDONGAS|OJOS TURCOS RAINBOW': 'Pequeños ojos turcos de colores sobre aros de plata 925. Protección y alegría en unas candongas llenas de personalidad.',
   'CANDONGAS|ROSA CON CIRCONES': 'Un aro de plata 925 que se abre en delicadas curvas cubiertas de circones. Unas candongas románticas y con un brillo inolvidable.',
   'CANDONGAS|SPLOT': 'Aros de plata 925 con detalles oscuros de formas irregulares. Unas candongas modernas y atrevidas para quienes rompen con lo predecible.',
+
+  // Aretes clásicos
+  'ARETES CLÁSICOS|CASCADA ROJA': 'Una cadena fina de plata 925 que deja caer un circón brillante y cristales rojos facetados, como gotas de luz. Unos aretes largos y festivos que acompañan cada movimiento.',
+  'ARETES CLÁSICOS|NUDO DE BRUJA': 'El antiguo nudo de protección, calado en plata 925, cuelga de un gancho clásico. Unos aretes ligeros, con historia y mucho carácter.',
 
   // Juegos completos
   'JUEGOS COMPLETOS|CORAZÓN VOLANDO': 'Corazones con alas, delineados con circones, en collar y topos a juego. Un conjunto romántico para sentir que el amor te eleva.',
